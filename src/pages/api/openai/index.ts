@@ -31,7 +31,7 @@ const artists: string[] = [];
 const tracksInfo: string[] = [];
 
 const INITIAL_CONTEXT = `
-Given the following artists: ${artists} and the following tracks (with artist names and track names) ${JSON.stringify(
+Given the following artists: ${artists.join(", ")} and the following tracks (with artist names and track names) ${JSON.stringify(
   tracksInfo,
   null,
   2,
