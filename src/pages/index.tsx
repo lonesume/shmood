@@ -1,3 +1,4 @@
+import { error } from "console";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,10 +13,11 @@ export default function Home() {
   useEffect(() => {
     fetch("/api/openai")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: { message: { content: string; role: string } }) => {
         console.log(data);
         setMessage(data.message.content);
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (

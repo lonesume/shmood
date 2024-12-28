@@ -21,7 +21,7 @@ export default async function handler(
   });
 
   const message =
-    chatCompletion.choices[0]?.message || "No message from Open AI!";
+    chatCompletion.choices[0]?.message ?? "No message from Open AI!";
 
   res.status(200).json({
     message: message,
