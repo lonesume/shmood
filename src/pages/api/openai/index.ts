@@ -2,7 +2,6 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import OpenAI from "openai";
 
 const apiKey = process.env.SHMOOD_V2_OPENAI_KEY;
-// TODO: test todo flow
 
 if (!apiKey) {
   throw new Error("No API key found for OpenAI in environment variables :(");
