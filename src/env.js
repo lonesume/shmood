@@ -11,6 +11,8 @@ export const env = createEnv({
     SHMOOD_V2_OPENAI_KEY: z.string(),
     SPOTIFY_CLIENT_ID: z.string(),
     SPOTIFY_CLIENT_SECRET: z.string(),
+    SPOTIFY_REDIRECT_URI: z.string(),
+    SPOTIFY_SCOPE: z.string(),
   },
 
   /**
@@ -31,6 +33,8 @@ export const env = createEnv({
     SHMOOD_V2_OPENAI_KEY: process.env.SHMOOD_V2_OPENAI_KEY,
     SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
     SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
+    SPOTIFY_REDIRECT_URI: process.env.SPOTIFY_REDIRECT_URI,
+    SPOTIFY_SCOPE: process.env.SPOTIFY_SCOPE,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
