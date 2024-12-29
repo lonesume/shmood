@@ -30,7 +30,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
+      - name: Debug TODO Parsing
+        run: |
+          echo "Parsing TODOs:"
+          grep -Enr 'TODO\(' .
       # Commit and push changes
       - name: Commit and Push Changes
         run: |
