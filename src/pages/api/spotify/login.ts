@@ -2,6 +2,8 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
+/* TODO(steevejoseph): Debug todo-to-issue */
+// TODO(lonesume): Need to add redirect url for production url for spotify portal
 const spotifyRedirectUri = process.env.SPOTIFY_REDIRECT_URI ?? "";
 const spotifyScope = process.env.SPOTIFY_SCOPE ?? "";
 
@@ -30,8 +32,6 @@ export default async function handler(
     client_id: spotifyClientId,
     client_secret: spotifyClientSecret,
     scope: spotifyScope,
-    /* TODO(steevejoseph): Debug todo-to-issue */
-    // TODO(lonesume): Need to add redirect url for production url for spotify portal
     redirect_uri: spotifyRedirectUri,
     response_type: "code",
   }).toString();
