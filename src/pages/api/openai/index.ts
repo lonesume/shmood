@@ -8,6 +8,7 @@ if (!apiKey) {
 }
 
 // TODO: new todo
+// Issue URL: https://github.com/lonesume/shmood/issues/5
 const client = new OpenAI({
   apiKey,
 });
