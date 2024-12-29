@@ -30,7 +30,7 @@ export default async function handler(
     client_id: spotifyClientId,
     client_secret: spotifyClientSecret,
     scope: spotifyScope,
-    // TODO(steevejoseph): Debug todo-to-issue
+    /* TODO(steevejoseph): Debug todo-to-issue */
     // TODO(lonesume): Need to add redirect url for production url for spotify portal
     redirect_uri: spotifyRedirectUri,
     response_type: "code",
