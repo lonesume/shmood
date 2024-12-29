@@ -16,30 +16,33 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Determine Commit SHAs
-        id: commits
-        run: |
-          if git rev-parse ${{ github.event.inputs.MANUAL_BASE_REF || 'HEAD~1' }} >/dev/null 2>&1; then
-            echo "base_ref=${{ github.event.inputs.MANUAL_BASE_REF || 'HEAD~1' }}" >> $GITHUB_ENV
-          else
-            echo "base_ref=$(git rev-list --max-parents=0 HEAD)" >> $GITHUB_ENV
-          fi
-          echo "commit_ref=${{ github.event.inputs.MANUAL_COMMIT_REF || 'HEAD' }}" >> $GITHUB_ENV
-
-      - name: Debug File Changes
-        run: |
-          echo "Changed files:"
-          git diff --name-only $base_ref $commit_ref
-
+      # Check out the codebase
+      - uses: "actions/checkout@v4"
       - name: "TODO to Issue"
         uses: "alstr/todo-to-issue-action@v5"
         with:
           INSERT_ISSUE_URLS: "true"
           PROJECT: "user/lonesume/shmood"
           PROJECTS_SECRET: "${{ secrets.PROJECTS_SECRET }}"
-          COMMIT_REF: $commit_ref
-          BASE_REF: $base_ref
+
+      # Set Git user credentials for committing
+      - name: Set Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Debug File Changes
+        run: |
+          echo "Changed files:"
+          git diff --name-only ${{ github.event.inputs.MANUAL_BASE_REF || 'HEAD~1' }} ${{ github.event.inputs.MANUAL_COMMIT_REF || 'HEAD' }}
+      # Commit and push changes
+      - name: Commit and Push Changes
+        run: |
+          git add -A
+          if [[ $(git status --porcelain) ]]; then
+            git commit -m "Automatically added GitHub issue links to TODOs"
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
+        shell: bash
