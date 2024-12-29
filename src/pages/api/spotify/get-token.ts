@@ -3,6 +3,7 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
+// TODO(steevejoseph): Test asignee
 if (!spotifyClientId || !spotifyClientSecret) {
   const message = `Invalid for Spotify in environment variables :(\nclientID was <${spotifyClientId}>, clientSecret was <${spotifyClientSecret}>`;
   throw new Error(message);

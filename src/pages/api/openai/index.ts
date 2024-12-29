@@ -7,7 +7,6 @@ if (!apiKey) {
   throw new Error("No API key found for OpenAI in environment variables :(");
 }
 
-// TODO: new todo
 const client = new OpenAI({
   apiKey,
 });
