@@ -31,6 +31,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Debug File Changes
+        run: |
+          echo "Changed files:"
+          git diff --name-only ${{ github.event.inputs.MANUAL_BASE_REF || 'HEAD~1' }} ${{ github.event.inputs.MANUAL_COMMIT_REF || 'HEAD' }}
       # Commit and push changes
       - name: Commit and Push Changes
         run: |
