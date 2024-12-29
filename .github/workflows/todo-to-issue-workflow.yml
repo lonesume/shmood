@@ -16,7 +16,11 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      # Check out the codebase
+      - name: Check PROJECTS_SECRET
+        run: |
+          echo "PROJECTS_SECRET is set: ${{ secrets.PROJECTS_SECRET }}"
+
+        # Check out the codebase
       - uses: "actions/checkout@v4"
       - name: "TODO to Issue"
         uses: "alstr/todo-to-issue-action@v5"
