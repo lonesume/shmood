@@ -11,7 +11,7 @@ if (
   !spotifyRedirectUri ||
   !spotifyScope
 ) {
-  const message = `Invalid for Spotify in environment variables :(
+  const message = `Invalid for Spotify in environment variables : (
   \nclientID was <${spotifyClientId}>
   ,\nclientSecret was <${spotifyClientSecret}>
   ,\nspotifyRedirectUri was <${spotifyRedirectUri}>
@@ -24,8 +24,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   //   var state = generateRandomString(16);
-
-  //   const scope = "user-top-read user-read-recently-played user-library-modify";
 
   const response = res.redirect(
     "https://accounts.spotify.com/authorize?" +
