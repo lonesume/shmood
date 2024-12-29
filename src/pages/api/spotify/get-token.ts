@@ -4,6 +4,7 @@ const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 
 // TODO(steevejoseph): Test asignee
+// Issue URL: https://github.com/lonesume/shmood/issues/6
 if (!spotifyClientId || !spotifyClientSecret) {
   const message = `Invalid for Spotify in environment variables :(\nclientID was <${spotifyClientId}>, clientSecret was <${spotifyClientSecret}>`;
   throw new Error(message);
