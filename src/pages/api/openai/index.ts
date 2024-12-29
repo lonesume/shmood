@@ -3,6 +3,7 @@ import OpenAI from "openai";
 
 const apiKey = process.env.SHMOOD_V2_OPENAI_KEY;
 // TODO: test todo flow
+// Issue URL: https://github.com/lonesume/shmood/issues/4
 
 if (!apiKey) {
   throw new Error("No API key found for OpenAI in environment variables :(");
