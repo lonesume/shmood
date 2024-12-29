@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import OpenAI from "openai";
 
 const apiKey = process.env.SHMOOD_V2_OPENAI_KEY;

@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
@@ -23,6 +23,10 @@ export default async function handler(
       client_secret: spotifyClientSecret,
     }),
   });
-  const data = await response.json();
+  const data = (await response.json()) as {
+    access_token: string;
+    expires_in: number;
+    token_type: string;
+  };
   res.status(200).json(data);
 }
