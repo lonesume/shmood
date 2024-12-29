@@ -4,8 +4,7 @@ const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
 const spotifyRedirectUri = process.env.SPOTIFY_REDIRECT_URI ?? "";
 const spotifyScope = process.env.SPOTIFY_SCOPE ?? "";
-// TODO(steevejoseph): Debug todo-to-issue
-// TODO(lonesume): Need to add redirect url for production url for spotify portal
+
 if (
   !spotifyClientId ||
   !spotifyClientSecret ||
@@ -24,7 +23,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // TODO(steevejoseph): Figure out how this `state` is used
   //   var state = generateRandomString(16);
 
   const query = new URLSearchParams({
