@@ -1,8 +1,10 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
-import { SpotifyTopArtistsJSON, SpotifyTopTracksJSON } from "~/utils/spotify";
+
+import {
+  type SpotifyTopArtistsJSON,
+  type SpotifyTopTracksJSON,
+} from "~/utils/spotify";
 
 export default async function handler(
   req: NextApiRequest,

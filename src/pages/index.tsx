@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useCallback, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getContext, SpotifyTopItems } from "~/utils/spotify";
+import OpenAI from "openai";
 
 export type SpotifyToken = {
   access_token: string;
@@ -93,22 +94,26 @@ export default function Home() {
       getProfile().catch((err) =>
         console.error("Failed to fetch profile:", err),
       );
-      fetch("/api/spotify/get-user-top-items").then(async (res) => {
-        const data = (await res.json()) as SpotifyTopItems;
-        setTopItems(data);
-        const initialContext = getContext(data);
+      fetch("/api/spotify/get-user-top-items")
+        .then(async (res) => {
+          const data = (await res.json()) as SpotifyTopItems;
+          setTopItems(data);
+          const initialContext = getContext(data);
 
-        const query = new URLSearchParams({
-          context: initialContext,
-        }).toString();
+          const query = new URLSearchParams({
+            context: initialContext,
+          }).toString();
 
-        const initGptRes = await fetch(`api/openai?${query}`);
-        const gptResponseSpotify = await initGptRes.json();
-        console.log(gptResponseSpotify);
+          const initGptRes = await fetch(`api/openai?${query}`);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const gptResponseSpotify =
+            (await initGptRes.json()) as OpenAI.Chat.ChatCompletion;
+          console.log(gptResponseSpotify);
 
-        // setMessage(gptResponseSpotify);
-        // console.log(data);
-      });
+          // setMessage(gptResponseSpotify);
+          // console.log(data);
+        })
+        .catch((err) => console.error("Failed to get user top items", err));
     }
   }, [session, getProfile]);
 

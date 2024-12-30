@@ -15,8 +15,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  let query = req.query;
-  let context = query.context as string;
+  const query = req.query;
+  const context = query.context as string;
   // console.log("query:", query);
 
   const chatCompletion = await client.chat.completions.create({
