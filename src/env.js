@@ -13,6 +13,7 @@ export const env = createEnv({
     SPOTIFY_CLIENT_SECRET: z.string(),
     SPOTIFY_REDIRECT_URI: z.string(),
     SPOTIFY_SCOPE: z.string(),
+    NEXTAUTH_SECRET: z.string(),
   },
 
   /**
@@ -35,6 +36,7 @@ export const env = createEnv({
     SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
     SPOTIFY_REDIRECT_URI: process.env.SPOTIFY_REDIRECT_URI,
     SPOTIFY_SCOPE: process.env.SPOTIFY_SCOPE,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
