@@ -37,6 +37,7 @@ export const authOptions: NextAuthOptions = {
       token,
       account,
       // TODO(steevejoseph): Figure out how to incorporate the user param
+      // Issue URL: https://github.com/lonesume/shmood/issues/8
       // user,
     }: {
       token: JWT;
