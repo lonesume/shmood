@@ -12,12 +12,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    // <div className={GeistSans.className}>
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
-
-    // </div>
+    <div className={GeistSans.className}>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </div>
   );
 };
 
