@@ -68,6 +68,7 @@ export default function Home() {
           </p>
 
           {/* TODO(steevejoseph): simplify */}
+              Issue URL: https://github.com/lonesume/shmood/issues/7
           <div className="text-white">
             {!session ? (
               <button onClick={() => signIn("spotify")}>
