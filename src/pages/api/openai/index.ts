@@ -15,8 +15,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  let query = req.query;
+  let context = query.context as string;
+  // console.log("query:", query);
+
   const chatCompletion = await client.chat.completions.create({
-    messages: [{ role: "user", content: "Say this is a test" }],
+    messages: [
+      { role: "user", content: "Say this is a test" },
+      { role: "user", content: context },
+    ],
+
     model: "gpt-3.5-turbo",
   });
 
@@ -27,40 +35,3 @@ export default async function handler(
     message: message,
   });
 }
-const artists: string[] = [];
-const tracksInfo: string[] = [];
-
-const INITIAL_CONTEXT = `
-Given the following artists: ${artists.join(", ")} and the following tracks (with artist names and track names) ${JSON.stringify(
-  tracksInfo,
-  null,
-  2,
-)},
-Have a conversation wherein you make recommendations to the person you're speaking to about their mood
-and based on their mood, create a playlist
-`;
-
-console.log(INITIAL_CONTEXT);
-
-// Python SDK reference
-/*
-     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": f"Speak as if you are a {role}."},
-            {"role": "user", "content": content},
-        ],
-        max_tokens=100,
-    )
- */
-
-// Golang SDK reference
-/*
-    chatCompletion, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
-            Messages: openai.F([]openai.ChatCompletionMessageParamUnion{
-                openai.UserMessage(userMessage),
-            }),
-            Model:     openai.F(openai.ChatModelGPT3_5Turbo),
-            MaxTokens: openai.F(int64(100)),
-        })
-*/

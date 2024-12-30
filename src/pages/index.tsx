@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useCallback, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { getContext, SpotifyTopItems } from "~/utils/spotify";
 
 export type SpotifyToken = {
   access_token: string;
@@ -41,10 +42,12 @@ export default function Home() {
   // const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const { data: session } = useSession();
 
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
   const [userProfile, setUserProfile] = useState<SpotifyUserProfile | null>(
     null,
   );
+
+  const [topItems, setTopItems] = useState<SpotifyTopItems | null>(null);
 
   // useEffect(() => {
   //   fetch("/api/openai")
@@ -65,7 +68,16 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        const error = await response.text();
+
+        if (response.status === 401) {
+          await signOut();
+          return;
+        }
+
+        throw new Error(
+          `Failed to fetch profile, ${response.status}, ${error}`,
+        );
       }
 
       const data = (await response.json()) as SpotifyUserProfile;
@@ -81,6 +93,22 @@ export default function Home() {
       getProfile().catch((err) =>
         console.error("Failed to fetch profile:", err),
       );
+      fetch("/api/spotify/get-user-top-items").then(async (res) => {
+        const data = (await res.json()) as SpotifyTopItems;
+        setTopItems(data);
+        const initialContext = getContext(data);
+
+        const query = new URLSearchParams({
+          context: initialContext,
+        }).toString();
+
+        const initGptRes = await fetch(`api/openai?${query}`);
+        const gptResponseSpotify = await initGptRes.json();
+        console.log(gptResponseSpotify);
+
+        // setMessage(gptResponseSpotify);
+        // console.log(data);
+      });
     }
   }, [session, getProfile]);
 
@@ -114,8 +142,6 @@ export default function Home() {
             {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
             {/* {`From GPT: ${message}`} */}
           </p>
-          {/* TODO(steevejoseph): simplify */}
-          Issue URL: https://github.com/lonesume/shmood/issues/7
           <div className="text-white">{renderButtons()}</div>
         </div>
       </main>
