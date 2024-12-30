@@ -44,7 +44,6 @@ export default function Home() {
 
   // const [message, setMessage] = useState("");
   const [userProfile, setUserProfile] = useState({} as SpotifyUserProfile);
-  const router = useRouter();
 
   // useEffect(() => {
   //   fetch("/api/openai")
@@ -65,7 +64,7 @@ export default function Home() {
       },
     });
 
-    const data = await response.json();
+    const data: SpotifyUserProfile = await response.json();
     console.log("User profile", data);
     setUserProfile(data);
   }, [session?.accessToken]);
@@ -82,14 +81,12 @@ export default function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
-
           <p className="text-2xl text-white">
             {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
             {/* {`From GPT: ${message}`} */}
           </p>
-
           {/* TODO(steevejoseph): simplify */}
-              Issue URL: https://github.com/lonesume/shmood/issues/7
+          Issue URL: https://github.com/lonesume/shmood/issues/7
           <div className="text-white">
             {!session ? (
               <button onClick={() => signIn("spotify")}>

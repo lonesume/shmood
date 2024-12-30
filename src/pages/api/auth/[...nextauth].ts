@@ -71,13 +71,13 @@ export const authOptions: NextAuthOptions = {
     async session({
       session,
       token,
-      user,
+      // user,
     }: {
       session: Session;
       token: JWT;
-      user: User;
+      // user: User;
     }): Promise<ExtendedSession> {
-      session.accessToken = token.accessToken as string;
+      session.accessToken = token.accessToken!;
       return session;
     },
   },
