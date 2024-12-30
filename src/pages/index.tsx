@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export type SpotifyToken = {
@@ -11,18 +11,39 @@ export type SpotifyToken = {
   scope: string;
 };
 
-function isObjectEmpty(obj: object) {
-  // Using Object.keys()
-  return Object.keys(obj).length === 0;
-}
+export type SpotifyUserProfile = {
+  country: string;
+  display_name: string;
+  email: string;
+  explicit_content: {
+    filter_enabled: boolean;
+    filter_locked: boolean;
+  };
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: string;
+    total: number;
+  };
+  href: string;
+  id: string;
+  images: Array<{
+    url: string;
+    height: number;
+    width: number;
+  }>;
+  product: string;
+  type: string;
+  uri: string;
+};
 
 export default function Home() {
   // const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const { data: session } = useSession();
 
-  const [message, setMessage] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-  const [userProfile, setUserProfile] = useState({} as any);
+  // const [message, setMessage] = useState("");
+  const [userProfile, setUserProfile] = useState({} as SpotifyUserProfile);
   const router = useRouter();
 
   // useEffect(() => {
@@ -64,7 +85,7 @@ export default function Home() {
 
           <p className="text-2xl text-white">
             {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
-            {`From GPT: ${message}`}
+            {/* {`From GPT: ${message}`} */}
           </p>
 
           {/* TODO(steevejoseph): simplify */}

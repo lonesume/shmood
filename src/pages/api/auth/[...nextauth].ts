@@ -5,7 +5,6 @@ import SpotifyProvider from "next-auth/providers/spotify";
 
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID ?? "";
 const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET ?? "";
-const spotifyRedirectUri = process.env.SPOTIFY_REDIRECT_URI ?? "";
 const spotifyScope = process.env.SPOTIFY_SCOPE ?? "";
 
 interface ExtendedToken extends JWT {
@@ -37,16 +36,22 @@ export const authOptions: NextAuthOptions = {
     async jwt({
       token,
       account,
-      user,
+      // TODO(steevejoseph): Figure out how to incorporate the user param
+      // user,
     }: {
       token: JWT;
       account: Account | null;
-      user: User | null;
+      // user: User | null;
       trigger?: "signIn" | "signUp" | "update";
     }): Promise<ExtendedToken> {
       if (account) {
         token.accessToken = account.access_token;
       }
+
+      // if (user) {
+      //   token.user = user;
+      // }
+
       return token;
     },
     async redirect({
