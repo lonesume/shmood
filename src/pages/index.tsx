@@ -77,12 +77,11 @@ export default function Home() {
 
   // Add useEffect to fetch profile when session becomes available
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (session?.accessToken) {
-        getProfile();
-      }
-    };
-    fetchProfile();
+    if (session?.accessToken) {
+      getProfile().catch((err) =>
+        console.error("Failed to fetch profile:", err),
+      );
+    }
   }, [session, getProfile]);
 
   const renderButtons = useCallback(() => {
