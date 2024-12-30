@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export type SpotifyToken = {
@@ -43,7 +43,9 @@ export default function Home() {
   const { data: session } = useSession();
 
   // const [message, setMessage] = useState("");
-  const [userProfile, setUserProfile] = useState({} as SpotifyUserProfile);
+  const [userProfile, setUserProfile] = useState<SpotifyUserProfile | null>(
+    null,
+  );
 
   // useEffect(() => {
   //   fetch("/api/openai")
@@ -55,19 +57,45 @@ export default function Home() {
   //     .catch((err) => console.log(err));
   // }, []);
 
+  // Add useEffect to fetch profile when session becomes available
+  useEffect(() => {
+    if (session?.accessToken) {
+      getProfile();
+    }
+  }, [session]);
+
   const getProfile = useCallback(async () => {
-    // let accessToken = localStorage.getItem("access_token");
+    try {
+      const response = await fetch("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: "Bearer " + session?.accessToken,
+        },
+      });
 
-    const response = await fetch("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: "Bearer " + session?.accessToken,
-      },
-    });
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+      }
 
-    const data: SpotifyUserProfile = await response.json();
-    console.log("User profile", data);
-    setUserProfile(data);
+      const data: SpotifyUserProfile = await response.json();
+      setUserProfile(data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
   }, [session?.accessToken]);
+
+  const renderButtons = useCallback(() => {
+    if (!session) {
+      return (
+        <button onClick={() => signIn("spotify")}>Sign in with Spotify</button>
+      );
+    }
+    return (
+      <>
+        {userProfile && <pre>{JSON.stringify(userProfile, null, 2)}</pre>}
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    );
+  }, [session, userProfile]);
 
   return (
     <>
@@ -87,23 +115,7 @@ export default function Home() {
           </p>
           {/* TODO(steevejoseph): simplify */}
           Issue URL: https://github.com/lonesume/shmood/issues/7
-          <div className="text-white">
-            {!session ? (
-              <button onClick={() => signIn("spotify")}>
-                Sign in with Spotify
-              </button>
-            ) : (
-              <>
-                <button onClick={() => signOut()}>Sign out</button>
-                <button onClick={getProfile} disabled={!session}>
-                  Get User Profile
-                </button>
-                {userProfile && Object.keys(userProfile).length > 0 && (
-                  <pre>{JSON.stringify(userProfile, null, 2)}</pre>
-                )}
-              </>
-            )}
-          </div>
+          <div className="text-white">{renderButtons()}</div>
         </div>
       </main>
     </>
