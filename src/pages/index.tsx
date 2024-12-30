@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useCallback, useState, useEffect } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 
@@ -57,13 +56,6 @@ export default function Home() {
   //     .catch((err) => console.log(err));
   // }, []);
 
-  // Add useEffect to fetch profile when session becomes available
-  useEffect(() => {
-    if (session?.accessToken) {
-      getProfile();
-    }
-  }, [session]);
-
   const getProfile = useCallback(async () => {
     try {
       const response = await fetch("https://api.spotify.com/v1/me", {
@@ -76,12 +68,22 @@ export default function Home() {
         throw new Error("Failed to fetch profile");
       }
 
-      const data: SpotifyUserProfile = await response.json();
+      const data = (await response.json()) as SpotifyUserProfile;
       setUserProfile(data);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   }, [session?.accessToken]);
+
+  // Add useEffect to fetch profile when session becomes available
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (session?.accessToken) {
+        getProfile();
+      }
+    };
+    fetchProfile();
+  }, [session, getProfile]);
 
   const renderButtons = useCallback(() => {
     if (!session) {
